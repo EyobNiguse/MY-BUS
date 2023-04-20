@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const mongoose  = require("mongoose");
 const busSchema =  new mongoose.Schema({
   plateNumber:{
@@ -5,8 +6,11 @@ const busSchema =  new mongoose.Schema({
     required:true
   },
   fleetKey:{
-    typr:String,
+    type:String,
     required:true
+  },
+  socketID:{
+    type:String
   },
   locationLat:{
     type:String
@@ -15,4 +19,11 @@ const busSchema =  new mongoose.Schema({
     type:String   
   }
 });
-module.exports = monoose.model("Bus",busSchema);
+function validate(bus){
+    const busS = Joi.object().keys({
+        plateNumber:String.required()
+    });
+    return busS.validate(bus);
+}
+module.exports.busSchema = monoose.model("Bus",busSchema);
+module.exports.validateBus  =  validate;
